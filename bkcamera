@@ -1,0 +1,25 @@
+#!/bin/sh
+
+TOP=./android
+if [ -e $TOP ]; then
+paths=("$TOP/kernel/drivers/media/video/msm/sensors/" 
+"$TOP/kernel/arch/arm/mach-msm/"
+"$TOP/kernel/arch/arm/configs/"
+"$TOP/vendor/qcom/proprietary/common/config/device-vendor.mk"
+"$TOP/vendor/qcom/proprietary/mm-camera/")
+for name in ${paths[@]}; do
+	echo $name
+	DIR=project/$(dirname $name)
+	if [ ! -e $DIR ]; then
+		mkdir -p $DIR
+	fi
+	echo "copy files to tmp directory"
+	cp -rf $name $DIR
+
+done
+echo "compress......"
+tar -jcf `date +%y-%m-%d-%H-%M`-camera.tar.bz2 project
+echo "delete tmp directory"
+rm -rf project
+
+fi
