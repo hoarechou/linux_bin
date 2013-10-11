@@ -1,0 +1,34 @@
+#!/bin/sh
+
+
+
+if [ -n "$1" ]; then
+file=$1
+
+seq=1
+while read line
+do
+#	lines[$seq]=$line
+#	((seq++))
+	echo "file->$line"
+	DIR=project/$(dirname $line)
+	echo "DIR=$DIR"
+	if [ ! -e $DIR ]; then
+		echo "making tree directory"
+		mkdir -p $DIR
+	fi
+	
+	echo "copy files to directory"
+	cp -rf $line $DIR
+done < $file
+
+#tar -jcf `date +%m-%d-%H-%M`-files.tar.bz2 project
+echo "delete tmp directory"
+#rm -rf project
+else
+	echo "no file list path"
+fi
+#for ((i=1;i<=${#lines[@]};i++))
+#do
+#	echo ${lines[$i]}
+#done
